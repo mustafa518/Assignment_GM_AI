@@ -24,96 +24,108 @@ if "cart" not in st.session_state:
 # ----------------------------------
 
 menu = [
+
     {"Item": "🍔 Zinger Burger", "Price": 650},
+
     {"Item": "🧀🍔 Cheese Burger", "Price": 750},
+
     {"Item": "🍟 French Fries", "Price": 300},
+
     {"Item": "🌯 Chicken Shawarma", "Price": 450},
+
     {"Item": "🥪 Grilled Cheese Sandwich", "Price": 550},
+
     {"Item": "🍢 Reshmi Kabab", "Price": 700},
+
     {"Item": "🍗 Chicken Nuggets", "Price": 500},
+
     {"Item": "🍕 Pizza", "Price": 1200}
+
 ]
 
 
 # ----------------------------------
-# SPECIAL DISCOUNT DEALS
+# DISCOUNT DEALS
 # ----------------------------------
 
 deals = [
 
     {
-        "name": "🔥 Student Special Deal",
+        "name": "🔥 Student Special Deal (20% OFF)",
         "price": 799,
         "items": [
             "🍔 Zinger Burger",
             "🍟 French Fries",
             "🥤 Regular Cold Drink",
-            "💰 Save PKR 150"
+            "🏷️ Discount: 20% OFF"
         ]
     },
 
 
     {
-        "name": "❤️ Couple Deal",
+        "name": "❤️ Couple Deal (25% OFF)",
         "price": 1499,
         "items": [
             "🧀 2 Cheese Burgers",
             "🍟 Large French Fries",
             "🥤 2 Cold Drinks",
-            "💰 Save PKR 300"
+            "🏷️ Discount: 25% OFF"
         ]
     },
 
 
     {
-        "name": "👨‍👩‍👧 Family Feast Deal",
+        "name": "👨‍👩‍👧 Family Feast Deal (30% OFF)",
         "price": 2499,
         "items": [
             "🍔 3 Zinger Burgers",
             "🍟 Large Fries",
             "🍕 Medium Pizza",
             "🥤 1.5L Cold Drink",
-            "💰 Save PKR 500"
+            "🏷️ Discount: 30% OFF"
         ]
     },
 
 
     {
-        "name": "🌯 Shawarma Lovers Deal",
+        "name": "🌯 Shawarma Lovers Deal (15% OFF)",
         "price": 999,
         "items": [
             "🌯 2 Chicken Shawarma",
             "🍟 French Fries",
             "🥤 Cold Drink",
-            "💰 Save PKR 200"
+            "🏷️ Discount: 15% OFF"
         ]
     },
 
 
     {
-        "name": "🎉 Weekend Mega Deal",
+        "name": "🎉 Weekend Mega Deal (35% OFF)",
         "price": 2999,
         "items": [
             "🍔 2 Zinger Burgers",
             "🧀 2 Cheese Burgers",
             "🍟 Family Fries",
             "🥤 1.5L Cold Drink",
-            "💰 Save PKR 700"
+            "🏷️ Discount: 35% OFF"
         ]
     }
+
 ]
 
 
 # ----------------------------------
-# SIDEBAR
+# SIDEBAR CART
 # ----------------------------------
 
 with st.sidebar:
+
 
     st.image(
         "owner.png",
         width=220
     )
+
 
     st.write(
         "👨‍💼 Owner: Ghulam Mustafa"
@@ -127,12 +139,14 @@ with st.sidebar:
 
     if len(st.session_state.cart) == 0:
 
+
         st.info(
             "Cart is Empty"
         )
 
 
     else:
+
 
         total = sum(
             item["Price"]
@@ -159,7 +173,9 @@ with st.sidebar:
             "🗑 Clear Cart"
         ):
 
+
             st.session_state.cart = []
+
             st.rerun()
 
 
@@ -185,9 +201,11 @@ with col2:
         "🍔 GM FAST FOOD"
     )
 
+
     st.write(
         "👨‍💼 Owner: Ghulam Mustafa"
     )
+
 
 
 st.markdown("""
@@ -202,13 +220,13 @@ Fresh Burgers • Crispy Fries • Delicious Shawarma • Hot Pizza
 
 
 st.info(
-    "🔥 Today's Special: Buy Any Burger & Get 20% OFF on French Fries!"
+    "🔥 Today's Special: Get Amazing Discounts Up To 35% OFF!"
 )
 
 
 
 # ----------------------------------
-# MENU
+# MENU SECTION
 # ----------------------------------
 
 st.header(
@@ -221,9 +239,12 @@ cols = st.columns(2)
 
 for i,item in enumerate(menu):
 
+
     with cols[i % 2]:
 
+
         with st.container(border=True):
+
 
             st.subheader(
                 item["Item"]
@@ -240,27 +261,32 @@ for i,item in enumerate(menu):
                 key=f"menu_{i}"
             ):
 
+
                 st.session_state.cart.append(
+
                     {
                         "Item": item["Item"],
                         "Price": item["Price"]
                     }
+
                 )
+
 
                 st.success(
                     "Added Successfully!"
                 )
                 # ----------------------------------
-# SPECIAL OFFERS / DISCOUNT DEALS
+# DISCOUNT OFFERS SECTION
 # ----------------------------------
 
 st.divider()
 
+
 st.markdown("""
 
-# 🔥 GM FAST FOOD SPECIAL OFFERS 🔥
+# 🔥 GM FAST FOOD DISCOUNT OFFERS 🔥
 
-### Save More • Eat More • Enjoy More ❤️
+### 🎁 Get Amazing Discounts Up To 35% OFF ❤️
 
 """)
 
@@ -270,9 +296,12 @@ deal_cols = st.columns(3)
 
 for i, deal in enumerate(deals):
 
+
     with deal_cols[i % 3]:
 
+
         with st.container(border=True):
+
 
             st.subheader(
                 deal["name"]
@@ -292,7 +321,7 @@ for i, deal in enumerate(deals):
 
 
             st.success(
-                f"💰 Special Price: PKR {deal['price']}"
+                f"🔥 Limited Offer Price: PKR {deal['price']}"
             )
 
 
@@ -303,10 +332,12 @@ for i, deal in enumerate(deals):
 
 
                 st.session_state.cart.append(
+
                     {
                         "Item": deal["name"],
                         "Price": deal["price"]
                     }
+
                 )
 
 
@@ -317,22 +348,27 @@ for i, deal in enumerate(deals):
 
 
 # ----------------------------------
-# CHECKOUT
+# CHECKOUT SECTION
 # ----------------------------------
 
 st.divider()
+
 
 st.header(
     "🧾 Checkout"
 )
 
 
+
 if len(st.session_state.cart) > 0:
 
 
     total = sum(
+
         item["Price"]
+
         for item in st.session_state.cart
+
     )
 
 
@@ -362,25 +398,33 @@ if len(st.session_state.cart) > 0:
     ):
 
 
+
         if not name or not address or not phone:
+
 
             st.error(
                 "⚠️ Please fill all details."
             )
 
 
+
         elif not (
+
             phone.startswith("03")
             and len(phone) == 11
             and phone.isdigit()
+
         ):
+
 
             st.error(
                 "❌ Wrong Phone Number"
             )
 
 
+
         else:
+
 
 
             st.success(
@@ -391,24 +435,32 @@ if len(st.session_state.cart) > 0:
             st.balloons()
 
 
+
             st.markdown(f"""
 
-## ❤️ Thank You {name} For Choosing GM Fast Food!
+# ❤️ Thank You {name}!
+
 
 Your order has been received successfully. 😊
 
+
 🍔 Our team is preparing your fresh food with care.
+
 
 🚚 Delivery Time: 20-30 Minutes
 
+
 ⭐ Your satisfaction is our first priority.
 
+
 We hope you enjoy your meal and visit us again.
+
 
 **With Love ❤️**  
 **GM Fast Food Team**
 
 """)
+
 
 
             st.write(
@@ -421,16 +473,22 @@ We hope you enjoy your meal and visit us again.
             )
 
 
+
             st.write(
                 "### 🛍️ Order Summary"
             )
 
 
+
             for item in st.session_state.cart:
 
+
                 st.write(
+
                     f"✅ {item['Item']} - PKR {item['Price']}"
+
                 )
+
 
 
             st.session_state.cart = []
@@ -439,8 +497,9 @@ We hope you enjoy your meal and visit us again.
 
 else:
 
+
     st.info(
-        "🍔 Please add food items or deals to your cart."
+        "🍔 Please add food items or discount deals to your cart."
     )
     # ----------------------------------
 # CUSTOMER FEEDBACK & COMPLAINT
@@ -448,14 +507,16 @@ else:
 
 st.divider()
 
+
 st.header(
     "💬 Customer Feedback & Complaint"
 )
 
 
 st.write(
-    "Your feedback helps us improve our food quality and service."
+    "Your feedback helps us improve our food quality and customer service."
 )
+
 
 
 feedback_type = st.selectbox(
@@ -468,9 +529,11 @@ feedback_type = st.selectbox(
 )
 
 
+
 message = st.text_area(
     "Write your message"
 )
+
 
 
 customer_name = st.text_input(
@@ -480,18 +543,21 @@ customer_name = st.text_input(
 
 
 if st.button(
-    "📩 Submit Feedback"
+    "📩 Submit"
 ):
 
 
     if not message or not customer_name:
+
 
         st.warning(
             "⚠️ Please fill all details."
         )
 
 
+
     elif feedback_type == "⚠️ Complaint":
+
 
         st.error(
             f"""
@@ -502,7 +568,7 @@ We are sorry for the inconvenience.
 
 Your complaint has been received successfully.
 
-Our team will review your complaint and try
+Our team will review your complaint and work
 to improve our service.
 
 Thank you for informing us ❤️
@@ -511,7 +577,9 @@ Thank you for informing us ❤️
         )
 
 
+
     elif feedback_type == "⭐ Feedback":
+
 
         st.success(
             f"""
@@ -520,10 +588,10 @@ Dear {customer_name},
 
 Thank you for your valuable feedback ❤️
 
-We appreciate your support.
+We really appreciate your support.
 
 Your feedback helps GM Fast Food provide
-better food and service.
+better taste and service.
 
 Visit us again! 🍔
 
@@ -531,7 +599,9 @@ Visit us again! 🍔
         )
 
 
+
     else:
+
 
         st.info(
             f"""
@@ -559,13 +629,13 @@ st.markdown("""
 
 ## ❤️ Thank You For Visiting GM Fast Food
 
-📍 Fresh Food Everyday
+🍔 Fresh Food Everyday
 
-🍔 Quality Taste & Fresh Ingredients
+⭐ Quality Taste & Fresh Ingredients
 
 🚚 Fast & Reliable Delivery
 
-📞 Customer Support Available
+💬 Customer Satisfaction Is Our Priority
 
 
 **GM Fast Food Team**
