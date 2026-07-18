@@ -181,7 +181,7 @@ with col2:
 
 st.markdown("""
 
-## 😋 Welcome to GM FAST FOOD
+## 😋 WELCOME TO GM FAST FOOD
 
 ### 🔥 Experience The Real Taste 🔥
 
