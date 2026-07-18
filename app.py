@@ -36,38 +36,69 @@ menu = [
 
 
 # ----------------------------------
-# DEALS
+# SPECIAL DISCOUNT DEALS
 # ----------------------------------
 
 deals = [
 
     {
-        "name": "🌯🍟🥤 Shawarma Starter Deal",
+        "name": "🔥 Student Special Deal",
+        "price": 799,
+        "items": [
+            "🍔 Zinger Burger",
+            "🍟 French Fries",
+            "🥤 Regular Cold Drink",
+            "💰 Save PKR 150"
+        ]
+    },
+
+
+    {
+        "name": "❤️ Couple Deal",
+        "price": 1499,
+        "items": [
+            "🧀 2 Cheese Burgers",
+            "🍟 Large French Fries",
+            "🥤 2 Cold Drinks",
+            "💰 Save PKR 300"
+        ]
+    },
+
+
+    {
+        "name": "👨‍👩‍👧 Family Feast Deal",
+        "price": 2499,
+        "items": [
+            "🍔 3 Zinger Burgers",
+            "🍟 Large Fries",
+            "🍕 Medium Pizza",
+            "🥤 1.5L Cold Drink",
+            "💰 Save PKR 500"
+        ]
+    },
+
+
+    {
+        "name": "🌯 Shawarma Lovers Deal",
         "price": 999,
         "items": [
-            "Chicken Shawarma 🌯",
-            "French Fries 🍟",
-            "1.5L Cold Drink 🥤"
+            "🌯 2 Chicken Shawarma",
+            "🍟 French Fries",
+            "🥤 Cold Drink",
+            "💰 Save PKR 200"
         ]
     },
 
-    {
-        "name": "🍔🌯🥤 Burger Shawarma Deal",
-        "price": 1299,
-        "items": [
-            "Zinger Burger 🍔",
-            "Chicken Shawarma 🌯",
-            "1.5L Cold Drink 🥤"
-        ]
-    },
 
     {
-        "name": "🧀🍔🍟🥤 Burger Fries Deal",
-        "price": 1099,
+        "name": "🎉 Weekend Mega Deal",
+        "price": 2999,
         "items": [
-            "Cheese Burger 🧀🍔",
-            "French Fries 🍟",
-            "1.5L Cold Drink 🥤"
+            "🍔 2 Zinger Burgers",
+            "🧀 2 Cheese Burgers",
+            "🍟 Family Fries",
+            "🥤 1.5L Cold Drink",
+            "💰 Save PKR 700"
         ]
     }
 ]
@@ -89,7 +120,9 @@ with st.sidebar:
     )
 
 
-    st.title("🛒 Your Cart")
+    st.title(
+        "🛒 Your Cart"
+    )
 
 
     if len(st.session_state.cart) == 0:
@@ -97,6 +130,7 @@ with st.sidebar:
         st.info(
             "Cart is Empty"
         )
+
 
     else:
 
@@ -121,7 +155,9 @@ with st.sidebar:
         )
 
 
-        if st.button("🗑 Clear Cart"):
+        if st.button(
+            "🗑 Clear Cart"
+        ):
 
             st.session_state.cart = []
             st.rerun()
@@ -214,19 +250,15 @@ for i,item in enumerate(menu):
                 st.success(
                     "Added Successfully!"
                 )
-
-
-
-# ----------------------------------
-# DEALS
+                # ----------------------------------
+# SPECIAL OFFERS / DISCOUNT DEALS
 # ----------------------------------
 
 st.divider()
 
-
 st.markdown("""
 
-# 🎉 MEGA SAVING DEALS 🎉
+# 🔥 GM FAST FOOD SPECIAL OFFERS 🔥
 
 ### Save More • Eat More • Enjoy More ❤️
 
@@ -236,9 +268,9 @@ st.markdown("""
 deal_cols = st.columns(3)
 
 
-for i,deal in enumerate(deals):
+for i, deal in enumerate(deals):
 
-    with deal_cols[i]:
+    with deal_cols[i % 3]:
 
         with st.container(border=True):
 
@@ -247,7 +279,9 @@ for i,deal in enumerate(deals):
             )
 
 
-            st.write("📦 Includes:")
+            st.write(
+                "📦 Includes:"
+            )
 
 
             for item in deal["items"]:
@@ -258,14 +292,15 @@ for i,deal in enumerate(deals):
 
 
             st.success(
-                f"💰 PKR {deal['price']}"
+                f"💰 Special Price: PKR {deal['price']}"
             )
 
 
             if st.button(
-                "Add Deal",
+                "🛒 Add Deal",
                 key=f"deal_{i}"
             ):
+
 
                 st.session_state.cart.append(
                     {
@@ -276,15 +311,20 @@ for i,deal in enumerate(deals):
 
 
                 st.success(
-                    "Deal Added!"
+                    "🎉 Deal Added Successfully!"
                 )
-                # ----------------------------------
+
+
+
+# ----------------------------------
 # CHECKOUT
 # ----------------------------------
 
 st.divider()
 
-st.header("🧾 Checkout")
+st.header(
+    "🧾 Checkout"
+)
 
 
 if len(st.session_state.cart) > 0:
@@ -311,19 +351,6 @@ if len(st.session_state.cart) > 0:
     )
 
 
-    city = st.selectbox(
-        "📍 Delivery City",
-        [
-            "Quetta",
-            "Karachi",
-            "Islamabad",
-            "Lahore",
-            "Peshawar",
-            "Other"
-        ]
-    )
-
-
     phone = st.text_input(
         "📞 Contact Number"
     )
@@ -339,25 +366,6 @@ if len(st.session_state.cart) > 0:
 
             st.error(
                 "⚠️ Please fill all details."
-            )
-
-
-        elif city != "Quetta":
-
-            st.warning(
-                f"""
-
-🚚 Sorry {name},
-
-Currently GM Fast Food delivery service is
-only available in Quetta city.
-
-We are working to expand our delivery
-service to other cities soon.
-
-Thank you for your understanding ❤️
-
-"""
             )
 
 
@@ -393,9 +401,7 @@ Your order has been received successfully. 😊
 
 🚚 Delivery Time: 20-30 Minutes
 
-📍 Delivery Area: Quetta
-
-⭐ Customer satisfaction is our first priority.
+⭐ Your satisfaction is our first priority.
 
 We hope you enjoy your meal and visit us again.
 
@@ -412,11 +418,6 @@ We hope you enjoy your meal and visit us again.
 
             st.write(
                 f"🏠 Address: {address}"
-            )
-
-
-            st.write(
-                f"📍 City: {city}"
             )
 
 
@@ -479,7 +480,7 @@ customer_name = st.text_input(
 
 
 if st.button(
-    "📩 Submit"
+    "📩 Submit Feedback"
 ):
 
 
@@ -491,7 +492,6 @@ if st.button(
 
 
     elif feedback_type == "⚠️ Complaint":
-
 
         st.error(
             f"""
@@ -513,7 +513,6 @@ Thank you for informing us ❤️
 
     elif feedback_type == "⭐ Feedback":
 
-
         st.success(
             f"""
 
@@ -533,7 +532,6 @@ Visit us again! 🍔
 
 
     else:
-
 
         st.info(
             f"""
