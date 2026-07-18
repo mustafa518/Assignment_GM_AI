@@ -10,12 +10,14 @@ st.set_page_config(
     layout="wide"
 )
 
+
 # ----------------------------------
 # SESSION STATE
 # ----------------------------------
 
 if "cart" not in st.session_state:
     st.session_state.cart = []
+
 
 # ----------------------------------
 # MENU ITEMS
@@ -31,6 +33,7 @@ menu = [
     {"Item": "🍗 Chicken Nuggets", "Price": 500},
     {"Item": "🍕 Pizza", "Price": 1200}
 ]
+
 
 # ----------------------------------
 # DEALS
@@ -69,6 +72,7 @@ deals = [
     }
 ]
 
+
 # ----------------------------------
 # SIDEBAR
 # ----------------------------------
@@ -80,13 +84,19 @@ with st.sidebar:
         width=220
     )
 
-    st.write("👨‍💼 Owner: Ghulam Mustafa")
+    st.write(
+        "👨‍💼 Owner: Ghulam Mustafa"
+    )
+
 
     st.title("🛒 Your Cart")
 
+
     if len(st.session_state.cart) == 0:
 
-        st.info("Cart is Empty")
+        st.info(
+            "Cart is Empty"
+        )
 
     else:
 
@@ -95,22 +105,27 @@ with st.sidebar:
             for item in st.session_state.cart
         )
 
+
         for item in st.session_state.cart:
 
             st.write(
                 f"✅ {item['Item']} - PKR {item['Price']}"
             )
 
+
         st.divider()
+
 
         st.subheader(
             f"💰 Total: PKR {total}"
         )
 
+
         if st.button("🗑 Clear Cart"):
 
             st.session_state.cart = []
             st.rerun()
+
 
 
 # ----------------------------------
@@ -130,7 +145,9 @@ with col1:
 
 with col2:
 
-    st.title("🍔 GM FAST FOOD")
+    st.title(
+        "🍔 GM FAST FOOD"
+    )
 
     st.write(
         "👨‍💼 Owner: Ghulam Mustafa"
@@ -153,11 +170,14 @@ st.info(
 )
 
 
+
 # ----------------------------------
 # MENU
 # ----------------------------------
 
-st.header("📋 Our Special Menu")
+st.header(
+    "📋 Our Special Menu"
+)
 
 
 cols = st.columns(2)
@@ -169,7 +189,10 @@ for i,item in enumerate(menu):
 
         with st.container(border=True):
 
-            st.subheader(item["Item"])
+            st.subheader(
+                item["Item"]
+            )
+
 
             st.write(
                 f"💰 Price: PKR {item['Price']}"
@@ -193,11 +216,13 @@ for i,item in enumerate(menu):
                 )
 
 
+
 # ----------------------------------
 # DEALS
 # ----------------------------------
 
 st.divider()
+
 
 st.markdown("""
 
@@ -221,7 +246,9 @@ for i,deal in enumerate(deals):
                 deal["name"]
             )
 
+
             st.write("📦 Includes:")
+
 
             for item in deal["items"]:
 
@@ -247,12 +274,11 @@ for i,deal in enumerate(deals):
                     }
                 )
 
+
                 st.success(
                     "Deal Added!"
                 )
-
-
-# ----------------------------------
+                # ----------------------------------
 # CHECKOUT
 # ----------------------------------
 
@@ -285,9 +311,23 @@ if len(st.session_state.cart) > 0:
     )
 
 
+    city = st.selectbox(
+        "📍 Delivery City",
+        [
+            "Quetta",
+            "Karachi",
+            "Islamabad",
+            "Lahore",
+            "Peshawar",
+            "Other"
+        ]
+    )
+
+
     phone = st.text_input(
         "📞 Contact Number"
     )
+
 
 
     if st.button(
@@ -298,13 +338,32 @@ if len(st.session_state.cart) > 0:
         if not name or not address or not phone:
 
             st.error(
-                "⚠️ Please fill all fields."
+                "⚠️ Please fill all details."
+            )
+
+
+        elif city != "Quetta":
+
+            st.warning(
+                f"""
+
+🚚 Sorry {name},
+
+Currently GM Fast Food delivery service is
+only available in Quetta city.
+
+We are working to expand our delivery
+service to other cities soon.
+
+Thank you for your understanding ❤️
+
+"""
             )
 
 
         elif not (
             phone.startswith("03")
-            and len(phone)==11
+            and len(phone) == 11
             and phone.isdigit()
         ):
 
@@ -334,6 +393,8 @@ Your order has been received successfully. 😊
 
 🚚 Delivery Time: 20-30 Minutes
 
+📍 Delivery Area: Quetta
+
 ⭐ Customer satisfaction is our first priority.
 
 We hope you enjoy your meal and visit us again.
@@ -348,8 +409,14 @@ We hope you enjoy your meal and visit us again.
                 f"📞 Contact: {phone}"
             )
 
+
             st.write(
                 f"🏠 Address: {address}"
+            )
+
+
+            st.write(
+                f"📍 City: {city}"
             )
 
 
@@ -365,7 +432,8 @@ We hope you enjoy your meal and visit us again.
                 )
 
 
-            st.session_state.cart=[]
+            st.session_state.cart = []
+
 
 
 else:
@@ -373,10 +441,8 @@ else:
     st.info(
         "🍔 Please add food items or deals to your cart."
     )
-
-
-# ----------------------------------
-# FEEDBACK & COMPLAINT
+    # ----------------------------------
+# CUSTOMER FEEDBACK & COMPLAINT
 # ----------------------------------
 
 st.divider()
@@ -406,63 +472,82 @@ message = st.text_area(
 )
 
 
-customer = st.text_input(
+customer_name = st.text_input(
     "Your Name"
 )
+
 
 
 if st.button(
     "📩 Submit"
 ):
 
-    if not message or not customer:
+
+    if not message or not customer_name:
 
         st.warning(
-            "Please fill all details."
+            "⚠️ Please fill all details."
         )
+
 
     elif feedback_type == "⚠️ Complaint":
 
-        st.error(f"""
 
-Dear {customer},
+        st.error(
+            f"""
+
+Dear {customer_name},
 
 We are sorry for the inconvenience.
 
-Your complaint has been received.
-Our team will review it and improve our service.
+Your complaint has been received successfully.
 
-Thank you for informing us.
+Our team will review your complaint and try
+to improve our service.
 
-""")
+Thank you for informing us ❤️
+
+"""
+        )
 
 
     elif feedback_type == "⭐ Feedback":
 
-        st.success(f"""
 
-Dear {customer},
+        st.success(
+            f"""
+
+Dear {customer_name},
 
 Thank you for your valuable feedback ❤️
 
 We appreciate your support.
 
-Visit GM Fast Food again! 🍔
+Your feedback helps GM Fast Food provide
+better food and service.
 
-""")
+Visit us again! 🍔
+
+"""
+        )
 
 
     else:
 
-        st.info(f"""
 
-Dear {customer},
+        st.info(
+            f"""
+
+Dear {customer_name},
 
 Thank you for your suggestion 💡
 
-We will consider your idea for better service.
+We will consider your idea to improve
+our food quality and customer experience.
 
-""")
+"""
+        )
+
 
 
 # ----------------------------------
@@ -471,15 +556,18 @@ We will consider your idea for better service.
 
 st.divider()
 
+
 st.markdown("""
 
 ## ❤️ Thank You For Visiting GM Fast Food
 
 📍 Fresh Food Everyday
 
-📞 Customer Support Available
+🍔 Quality Taste & Fresh Ingredients
 
 🚚 Fast & Reliable Delivery
+
+📞 Customer Support Available
 
 
 **GM Fast Food Team**
