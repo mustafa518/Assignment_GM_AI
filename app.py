@@ -1,5 +1,4 @@
 import streamlit as st
-import pandas as pd
 
 # ----------------------------------
 # PAGE CONFIG
@@ -27,7 +26,7 @@ menu = [
     {"Item": "🥪🧀 Grilled Cheese Sandwich", "Price": 550},
     {"Item": "🍢 Reshmi Kabab", "Price": 700},
     {"Item": "🍗 Chicken Nuggets", "Price": 500},
-    {"Item": "🍕 Pizza", "Price": 1200},
+    {"Item": "🍕 Pizza", "Price": 1200}
 ]
 
 # ----------------------------------
@@ -68,18 +67,22 @@ deals = [
 # ----------------------------------
 with st.sidebar:
 
+    st.image("owner.png", width=180)
+
     st.title("🛒 Your Cart")
 
     if len(st.session_state.cart) == 0:
         st.info("Cart is Empty")
 
     else:
+
         total = sum(item["Price"] for item in st.session_state.cart)
 
         for item in st.session_state.cart:
             st.write(f"✅ {item['Item']} - PKR {item['Price']}")
 
         st.divider()
+
         st.subheader(f"💰 Total: PKR {total}")
 
         if st.button("🗑 Clear Cart"):
@@ -89,15 +92,24 @@ with st.sidebar:
 # ----------------------------------
 # HEADER
 # ----------------------------------
-st.title("🍔 GM Fast Food")
+col1, col2 = st.columns([1, 2])
 
-st.markdown("""
+with col1:
+    st.image("owner.png", width=320)
+
+with col2:
+
+    st.title("🍔 GM FAST FOOD")
+
+    st.markdown("""
 ### 😋 Welcome to GM Fast Food
 
 Fresh Burgers • Crispy Fries • Delicious Shawarma • Hot Pizza
 
 🚚 Fast Delivery | 💯 Quality Food | 💵 Cash On Delivery
 """)
+
+    st.success("🔥 Today's Special: Buy Any Burger & Get 20% OFF on French Fries!")
 
 col1, col2, col3 = st.columns(3)
 
@@ -109,8 +121,6 @@ with col2:
 
 with col3:
     st.metric("🚚 Delivery", "20-30 Min")
-
-st.info("🔥 Today's Special: Buy Any Burger & Get 20% OFF on French Fries!")
 
 st.divider()
 
@@ -140,13 +150,12 @@ for i, item in enumerate(menu):
                 st.success("Added Successfully!")
 
 # ----------------------------------
-# DEALS SECTION
+# DEALS
 # ----------------------------------
 st.divider()
 
 st.markdown("""
 # 🎉 MEGA SAVING DEALS 🎉
-
 ### Save More • Eat More • Enjoy More ❤️
 """)
 
@@ -219,18 +228,24 @@ if len(st.session_state.cart) > 0:
 
 Dear **{name}**,
 
-✅ Your order has been confirmed.
+✅ Your order has been successfully confirmed.
 
-🚚 Estimated Delivery Time: **20-30 Minutes**
+📞 Contact Number: **{phone}**
+
+🏠 Delivery Address: **{address}**
 
 💰 Total Bill: **PKR {total}**
 
+🚚 Estimated Delivery Time: **20-30 Minutes**
+
+👨‍🍳 Our team has started preparing your order.
+
 ❤️ Thank you for choosing GM Fast Food.
 
-We look forward to serving you again!
+We hope you enjoy your meal and look forward to serving you again.
 """)
 
-            st.write("### 🛍️ Ordered Items")
+            st.write("### 🛍️ Order Summary")
 
             for item in st.session_state.cart:
                 st.write(f"✅ {item['Item']} - PKR {item['Price']}")
@@ -251,7 +266,7 @@ st.markdown("""
 
 📍 Fresh Food Everyday  
 📞 Customer Support Available  
-🚚 Fast & Reliable Delivery  
+🚚 Fast & Reliable Delivery
 
 **GM Fast Food Team**
 """)
