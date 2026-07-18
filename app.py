@@ -5,7 +5,7 @@ import streamlit as st
 # ----------------------------------
 
 st.set_page_config(
-    page_title="GM Fast Food",
+    page_title="GM FAST FOOD",
     page_icon="🍔",
     layout="wide"
 )
@@ -26,19 +26,12 @@ if "cart" not in st.session_state:
 menu = [
 
     {"Item": "🍔 Zinger Burger", "Price": 650},
-
     {"Item": "🧀🍔 Cheese Burger", "Price": 750},
-
     {"Item": "🍟 French Fries", "Price": 300},
-
     {"Item": "🌯 Chicken Shawarma", "Price": 450},
-
     {"Item": "🥪 Grilled Cheese Sandwich", "Price": 550},
-
     {"Item": "🍢 Reshmi Kabab", "Price": 700},
-
     {"Item": "🍗 Chicken Nuggets", "Price": 500},
-
     {"Item": "🍕 Pizza", "Price": 1200}
 
 ]
@@ -120,7 +113,6 @@ deals = [
 
 with st.sidebar:
 
-
     st.image(
         "owner.png",
         width=220
@@ -139,14 +131,12 @@ with st.sidebar:
 
     if len(st.session_state.cart) == 0:
 
-
         st.info(
             "Cart is Empty"
         )
 
 
     else:
-
 
         total = sum(
             item["Price"]
@@ -173,9 +163,7 @@ with st.sidebar:
             "🗑 Clear Cart"
         ):
 
-
             st.session_state.cart = []
-
             st.rerun()
 
 
@@ -210,11 +198,11 @@ with col2:
 
 st.markdown("""
 
-## 😋 WELCOME TO GM FAST FOOD
+## 😋 Welcome to GM FAST FOOD
 
-Fresh Burgers • Crispy Fries • Delicious Shawarma • Hot Pizza
+Fresh Taste • Quality Food • Fast Delivery ❤️
 
-🚚 Fast Delivery | 💯 Quality Food | 💵 Cash On Delivery
+🍔 Burgers • 🌯 Shawarma • 🍕 Pizza • 🍟 Fries
 
 """)
 
@@ -372,9 +360,27 @@ if len(st.session_state.cart) > 0:
     )
 
 
-    st.subheader(
-        f"💰 Total Bill: PKR {total}"
+    delivery_charges = 100
+
+
+    final_total = total + delivery_charges
+
+
+
+    st.write(
+        f"🛒 Food Bill: PKR {total}"
     )
+
+
+    st.write(
+        f"🚚 Delivery Charges: PKR {delivery_charges}"
+    )
+
+
+    st.subheader(
+        f"💰 Total Bill: PKR {final_total}"
+    )
+
 
 
     name = st.text_input(
@@ -450,14 +456,10 @@ Your order has been received successfully. 😊
 🚚 Delivery Time: 20-30 Minutes
 
 
-⭐ Your satisfaction is our first priority.
+⭐ Customer satisfaction is our first priority.
 
 
-We hope you enjoy your meal and visit us again.
-
-
-**With Love ❤️**  
-**GM Fast Food Team**
+**GM FAST FOOD Team ❤️**
 
 """)
 
@@ -502,11 +504,65 @@ else:
         "🍔 Please add food items or discount deals to your cart."
     )
     # ----------------------------------
-# CUSTOMER FEEDBACK & COMPLAINT
+# ORDER STATUS SYSTEM
 # ----------------------------------
 
 st.divider()
 
+st.header(
+    "📦 Order Tracking"
+)
+
+
+st.info("""
+
+Your Order Status:
+
+✅ Order Confirmed
+
+👨‍🍳 Preparing Food
+
+🚚 Out For Delivery
+
+🎉 Delivered Successfully
+
+""")
+
+
+# ----------------------------------
+# CUSTOMER RATING
+# ----------------------------------
+
+st.divider()
+
+st.header(
+    "⭐ Rate Your Experience"
+)
+
+
+rating = st.slider(
+    "Give Your Rating",
+    1,
+    5,
+    5
+)
+
+
+if st.button(
+    "⭐ Submit Rating"
+):
+
+    st.success(
+        f"Thank you for giving {rating} ⭐ rating!"
+    )
+
+
+
+# ----------------------------------
+# CUSTOMER FEEDBACK & COMPLAINT
+# ----------------------------------
+
+st.divider()
 
 st.header(
     "💬 Customer Feedback & Complaint"
@@ -514,7 +570,7 @@ st.header(
 
 
 st.write(
-    "Your feedback helps us improve our food quality and customer service."
+    "Your feedback helps us improve our food quality and service."
 )
 
 
@@ -531,7 +587,7 @@ feedback_type = st.selectbox(
 
 
 message = st.text_area(
-    "Write your message"
+    "Write Your Message"
 )
 
 
@@ -543,7 +599,7 @@ customer_name = st.text_input(
 
 
 if st.button(
-    "📩 Submit"
+    "📩 Submit Feedback"
 ):
 
 
@@ -553,7 +609,6 @@ if st.button(
         st.warning(
             "⚠️ Please fill all details."
         )
-
 
 
     elif feedback_type == "⚠️ Complaint":
@@ -568,14 +623,13 @@ We are sorry for the inconvenience.
 
 Your complaint has been received successfully.
 
-Our team will review your complaint and work
-to improve our service.
+Our team will check the issue and improve
+our service.
 
 Thank you for informing us ❤️
 
 """
         )
-
 
 
     elif feedback_type == "⭐ Feedback":
@@ -588,16 +642,12 @@ Dear {customer_name},
 
 Thank you for your valuable feedback ❤️
 
-We really appreciate your support.
+We appreciate your support.
 
-Your feedback helps GM Fast Food provide
-better taste and service.
-
-Visit us again! 🍔
+Visit GM FAST FOOD again! 🍔
 
 """
         )
-
 
 
     else:
@@ -610,11 +660,60 @@ Dear {customer_name},
 
 Thank you for your suggestion 💡
 
-We will consider your idea to improve
-our food quality and customer experience.
+We will consider your idea for improving
+our service.
 
 """
         )
+        # ----------------------------------
+# SHOP TIMING
+# ----------------------------------
+
+st.divider()
+
+
+st.header(
+    "🕒 Shop Timing"
+)
+
+
+st.write("""
+
+⏰ Opening Hours:
+
+12:00 PM - 12:00 AM
+
+📅 Open Everyday
+
+🚚 Online Delivery Available
+
+""")
+
+
+
+# ----------------------------------
+# CONTACT SECTION
+# ----------------------------------
+
+st.divider()
+
+
+st.header(
+    "📞 Contact Us"
+)
+
+
+st.write("""
+
+🍔 GM FAST FOOD
+
+📱 Call / WhatsApp: 03368382248
+
+🚚 Fast & Reliable Delivery
+
+💯 Quality Food & Customer Satisfaction
+
+""")
 
 
 
@@ -627,17 +726,17 @@ st.divider()
 
 st.markdown("""
 
-## ❤️ Thank You For Visiting GM Fast Food
+## ❤️ Thank You For Visiting GM FAST FOOD
 
-🍔 Fresh Food Everyday
+🍔 Fresh Taste Everyday
 
-⭐ Quality Taste & Fresh Ingredients
+⭐ Quality Food • Best Service
 
-🚚 Fast & Reliable Delivery
+🚚 Fast Delivery
 
-💬 Customer Satisfaction Is Our Priority
+📞 Customer Support Available
 
 
-**GM Fast Food Team**
+**GM FAST FOOD Team**
 
 """)
