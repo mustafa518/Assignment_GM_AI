@@ -1,177 +1,175 @@
 import streamlit as st
 import pandas as pd
 
-# -------------------------
-# Page Configuration
-# -------------------------
+# ---------------------------
+# Page Setup
+# ---------------------------
+st.set_page_config(page_title="GM Fast Food", page_icon="🍔")
 
-st.set_page_config(
-    page_title="GM Fast Food",
-    page_icon="🍔",
-    layout="wide"
-)
+st.title("🍔 GM Fast Food")
+st.write("### Fresh • Delicious • Affordable")
 
-# -------------------------
-# Menu Data
-# -------------------------
-
+# ---------------------------
+# Menu
+# ---------------------------
 menu = pd.DataFrame({
     "Item": [
-        "Sandwich 🥪",
-        "Burger 🍔",
-        "Pizza 🍕 (Small)",
-        "Pizza 🍕 (Medium)",
-        "Pizza 🍕 (Large)",
-        "Chicken Roll 🍗"
-    ],
-    "Category": [
-        "Fast Food",
-        "Fast Food",
-        "Pizza",
-        "Pizza",
-        "Pizza",
-        "Fast Food"
+        "🍔 Zinger Burger",
+        "🧀🍔 Cheese Burger",
+        "🍟 French Fries",
+        "🌯 Chicken Shawarma",
+        "🥪🧀 Grilled Cheese Sandwich",
+        "🍢 Reshmi Kabab",
+        "🍗 Chicken Nuggets",
+        "🍕 Pizza"
     ],
     "Price": [
-        350,
+        650,
+        750,
+        300,
+        450,
         550,
-        800,
-        1200,
-        1800,
-        400
+        700,
+        500,
+        1200
     ]
 })
 
-# -------------------------
-# Cart
-# -------------------------
+# ---------------------------
+# Deals
+# ---------------------------
+deals = pd.DataFrame({
+    "Item": [
+        "🌯🍟🥤 Shawarma Starter Deal",
+        "🍔🌯🥤 Burger Shawarma Deal",
+        "🧀🍔🍟🥤 Burger Fries Deal"
+    ],
+    "Price": [
+        999,
+        1299,
+        1099
+    ]
+})
 
+# ---------------------------
+# Cart
+# ---------------------------
 if "cart" not in st.session_state:
     st.session_state.cart = []
 
-# -------------------------
-# Sidebar
-# -------------------------
-
+# Sidebar Cart
 with st.sidebar:
+    st.header("🛒 Your Cart")
 
-    st.title("🛒 Your Cart")
+    total = sum(item["Price"] for item in st.session_state.cart)
 
-    if len(st.session_state.cart) == 0:
-        st.info("Cart is Empty")
-
-    else:
-
-        total = 0
-
+    if st.session_state.cart:
         for item in st.session_state.cart:
             st.write(f"✅ {item['Item']} - PKR {item['Price']}")
-            total += item["Price"]
 
-        st.divider()
         st.subheader(f"💰 Total: PKR {total}")
 
         if st.button("🗑 Clear Cart"):
             st.session_state.cart = []
             st.rerun()
+    else:
+        st.info("Cart is Empty")
 
-# -------------------------
-# Main Dashboard
-# -------------------------
+# ---------------------------
+# Food Items
+# ---------------------------
+st.header("📋 Menu")
 
-st.title("🍔 GM Fast Food")
-st.write("### Welcome to GM Fast Food - Fresh, Delicious & Affordable Meals")
-
-cols = st.columns(3)
+cols = st.columns(2)
 
 for i, row in menu.iterrows():
-
-    with cols[i % 3]:
-
+    with cols[i % 2]:
         with st.container(border=True):
-
             st.subheader(row["Item"])
-            st.write(f"Category: {row['Category']}")
-            st.write(f"Price: PKR {row['Price']}")
+            st.write(f"💰 PKR {row['Price']}")
 
-            if st.button("Add to Cart", key=i):
-
+            if st.button("Add to Cart", key=f"food{i}"):
                 st.session_state.cart.append({
                     "Item": row["Item"],
                     "Price": row["Price"]
                 })
+                st.success("Added!")
 
-                st.success(f"✅ {row['Item']} Added to Cart!")
+# ---------------------------
+# Deals Section
+# ---------------------------
+st.divider()
 
-# -------------------------
+st.markdown("## 🎉 MEGA SAVING DEALS 🎉")
+
+cols = st.columns(3)
+
+for i, row in deals.iterrows():
+    with cols[i]:
+        with st.container(border=True):
+            st.subheader(row["Item"])
+            st.write(f"💰 PKR {row['Price']}")
+
+            if st.button("Add Deal", key=f"deal{i}"):
+                st.session_state.cart.append({
+                    "Item": row["Item"],
+                    "Price": row["Price"]
+                })
+                st.success("Deal Added!")
+
+# ---------------------------
 # Checkout
-# -------------------------
-
+# ---------------------------
 st.divider()
 st.header("🧾 Checkout")
 
-if len(st.session_state.cart) > 0:
+if st.session_state.cart:
 
     total = sum(item["Price"] for item in st.session_state.cart)
 
-    st.subheader(f"Total Bill: PKR {total}")
+    name = st.text_input("👤 Customer Name")
+    address = st.text_area("🏠 Delivery Address")
+    phone = st.text_input("📞 Contact Number")
 
-    with st.form("checkout"):
+    if st.button("✅ Place Order"):
 
-        name = st.text_input("👤 Customer Name")
-        address = st.text_area("🏠 Delivery Address")
-        phone = st.text_input("📞 Contact Number")
+        if not name or not address or not phone:
+            st.error("Please fill all fields.")
 
-        st.info("💵 Payment Method: Cash on Delivery")
+        elif not (
+            phone.startswith("03")
+            and len(phone) == 11
+            and phone.isdigit()
+        ):
+            st.error(
+                "❌ Wrong Credentials! Phone number must start with 03 and contain 11 digits."
+            )
 
-        order = st.form_submit_button("✅ Place Order")
+        else:
+            st.success("🎉 Order Placed Successfully!")
+            st.balloons()
 
-        if order:
+            st.write("### 🛍️ Order Summary")
 
-            if name and address and phone:
+            for item in st.session_state.cart:
+                st.write(f"✅ {item['Item']} - PKR {item['Price']}")
 
-                st.success("🎉 Order Placed Successfully!")
-                st.balloons()
+            st.success(
+                f"""
+🍔 Thank you {name}!
 
-                st.markdown(f"""
-                ## 🍔 Thank You for Choosing GM Fast Food!
+Your order has been confirmed.
 
-                Dear **{name}**,
+💰 Total Bill: PKR {total}
 
-                Your order has been successfully confirmed and our kitchen team has started preparing your meal.
+🚚 Estimated Delivery Time: 20-30 Minutes
 
-                ### 📦 Order Details
-                - Customer: **{name}**
-                - Contact: **{phone}**
-                - Delivery Address: **{address}**
-                - Total Bill: **PKR {total}**
+❤️ Thank you for choosing GM Fast Food.
+We look forward to serving you again!
+                """
+            )
 
-                ### 🚚 Delivery Information
-                Estimated Delivery Time: **20-30 Minutes**
-
-                We are committed to providing fresh, delicious, and high-quality food.
-
-                ❤️ Thank you for trusting **GM Fast Food**.
-
-                We hope you enjoy your meal and look forward to serving you again.
-
-                **Best Regards,**  
-                **GM Fast Food Team**
-                """)
-
-                st.write("### 🧾 Ordered Items")
-
-                for item in st.session_state.cart:
-                    st.write(f"🍽️ {item['Item']} - PKR {item['Price']}")
-
-                st.info(
-                    "🍟 Tip: Add a cold drink with your next order for a complete meal experience!"
-                )
-
-                st.session_state.cart = []
-
-            else:
-                st.error("⚠️ Please fill all required fields.")
+            st.session_state.cart = []
 
 else:
-    st.info("🍔 Please add food items to your cart.")
+    st.info("Add food items or deals to your cart first.")
