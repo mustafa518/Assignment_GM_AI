@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+import sqlite3
 
 
 # ----------------------------------
@@ -21,8 +22,50 @@ if "cart" not in st.session_state:
     st.session_state.cart = []
 
 
-if "orders" not in st.session_state:
-    st.session_state.orders = {}
+
+# ----------------------------------
+# SQLITE DATABASE SETUP
+# ----------------------------------
+
+def create_database():
+
+    conn = sqlite3.connect("gm_orders.db")
+
+    cursor = conn.cursor()
+
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS orders (
+
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+        order_id TEXT,
+
+        name TEXT,
+
+        phone TEXT,
+
+        address TEXT,
+
+        city TEXT,
+
+        total INTEGER,
+
+        status TEXT,
+
+        items TEXT
+
+    )
+    """)
+
+
+    conn.commit()
+
+    conn.close()
+
+
+
+create_database()
 
 
 
@@ -32,71 +75,82 @@ if "orders" not in st.session_state:
 
 menu = [
 
-    {
-        "Item": "🍔 Zinger Burger",
-        "Price": 650
-    },
 
-    {
-        "Item": "🧀🍔 Cheese Burger",
-        "Price": 750
-    },
+{
+    "Item": "🍔 Zinger Burger",
+    "Price": 650
+},
 
-    {
-        "Item": "🍟 French Fries",
-        "Price": 300
-    },
 
-    {
-        "Item": "🌯 Chicken Shawarma",
-        "Price": 450
-    },
+{
+    "Item": "🧀🍔 Cheese Burger",
+    "Price": 750
+},
 
-    {
-        "Item": "🌯 GM Food Special Roll",
-        "Price": 650
-    },
 
-    {
-        "Item": "🌯 Chicken Chatni Roll",
-        "Price": 450
-    },
+{
+    "Item": "🍟 French Fries",
+    "Price": 300
+},
 
-    {
-        "Item": "🌯 Chicken Mayo Roll",
-        "Price": 500
-    },
 
-    {
-        "Item": "🍢 Reshmi Kabab",
-        "Price": 700
-    },
+{
+    "Item": "🌯 Chicken Shawarma",
+    "Price": 450
+},
 
-    {
-        "Item": "🍗 Chicken Nuggets",
-        "Price": 500
-    }
+
+{
+    "Item": "🌯 GM Food Special Roll",
+    "Price": 650
+},
+
+
+{
+    "Item": "🌯 Chicken Chatni Roll",
+    "Price": 450
+},
+
+
+{
+    "Item": "🌯 Chicken Mayo Roll",
+    "Price": 500
+},
+
+
+{
+    "Item": "🍢 Reshmi Kabab",
+    "Price": 700
+},
+
+
+{
+    "Item": "🍗 Chicken Nuggets",
+    "Price": 500
+}
+
 
 ]
 
 
 
 # ----------------------------------
-# PIZZA SIZE
+# PIZZA MENU
 # ----------------------------------
 
 pizza_menu = {
 
-    "🍕 Small Pizza": 700,
 
-    "🍕 Medium Pizza": 1200,
+"🍕 Small Pizza":700,
 
-    "🍕 Large Pizza": 1800
+
+"🍕 Medium Pizza":1200,
+
+
+"🍕 Large Pizza":1800
+
 
 }
-
-
-
 # ----------------------------------
 # HEADER
 # ----------------------------------
@@ -118,6 +172,7 @@ with col2:
         "🍔 GM FAST FOOD"
     )
 
+
     st.write(
         "👨‍💼 Owner: Ghulam Mustafa"
     )
@@ -128,13 +183,18 @@ st.markdown("""
 
 ## 😋 Welcome to GM FAST FOOD
 
-🍔 Burgers  
-🌯 Special Rolls  
-🍕 Pizza  
-🍟 Fries  
+
+🍔 Burgers
+
+🌯 Special Rolls
+
+🍕 Pizza
+
+🍟 Fries
 
 
 🚚 Fast Delivery | 💯 Quality Food
+
 
 """)
 
@@ -176,7 +236,6 @@ for i,item in enumerate(menu):
             )
 
 
-
             quantity = st.number_input(
 
                 "Quantity",
@@ -192,7 +251,6 @@ for i,item in enumerate(menu):
             )
 
 
-
             if st.button(
 
                 "➕ Add To Cart",
@@ -206,11 +264,11 @@ for i,item in enumerate(menu):
 
                     {
 
-                    "Item": item["Item"],
+                    "Item":item["Item"],
 
-                    "Price": item["Price"],
+                    "Price":item["Price"],
 
-                    "Quantity": quantity
+                    "Quantity":quantity
 
                     }
 
@@ -288,11 +346,11 @@ for i,(pizza,price) in enumerate(pizza_menu.items()):
 
                     {
 
-                    "Item": pizza,
+                    "Item":pizza,
 
-                    "Price": price,
+                    "Price":price,
 
-                    "Quantity": quantity
+                    "Quantity":quantity
 
                     }
 
@@ -302,79 +360,113 @@ for i,(pizza,price) in enumerate(pizza_menu.items()):
                 st.success(
                     "Pizza Added!"
                 )
-                # ----------------------------------
+
+
+
 # ----------------------------------
 # CART SECTION WITH REMOVE BUTTON
 # ----------------------------------
 
 with st.sidebar:
 
-    st.title("🛒 Your Cart")
+
+    st.title(
+        "🛒 Your Cart"
+    )
 
 
-    if len(st.session_state.cart) == 0:
 
-        st.info("Cart is Empty")
+    if len(st.session_state.cart)==0:
+
+
+        st.info(
+            "Cart is Empty"
+        )
 
 
     else:
 
+
         total = 0
 
 
-        for index, item in enumerate(st.session_state.cart):
+
+        for index,item in enumerate(st.session_state.cart):
+
 
             item_total = item["Price"] * item["Quantity"]
+
 
             total += item_total
 
 
-            st.write(
-                f"""
-🍔 {item['Item']}
+
+            col1,col2 = st.columns([4,1])
+
+
+            with col1:
+
+
+                st.write(
+
+f"""
+🍔 **{item['Item']}**
 
 Quantity: {item['Quantity']}
 
 Price: PKR {item_total}
+
 """
-            )
+
+                )
 
 
-            if st.button(
-                "🗑 Remove Item",
-                key=f"remove_{index}"
-            ):
 
-                st.session_state.cart.pop(index)
+            with col2:
 
-                st.rerun()
+
+                if st.button(
+
+                    "🗑",
+
+                    key=f"remove_{index}"
+
+                ):
+
+
+                    st.session_state.cart.pop(index)
+
+
+                    st.rerun()
 
 
 
         st.divider()
 
 
+
         st.subheader(
+
             f"💰 Total: PKR {total}"
+
         )
+
 
 
         if st.button(
             "🗑 Clear Cart"
         ):
 
-            st.session_state.cart = []
+
+            st.session_state.cart=[]
+
 
             st.rerun()
-
-
-
-# ----------------------------------
+                # ----------------------------------
 # SPECIAL DEALS
 # ----------------------------------
 
 st.divider()
-
 
 st.markdown("""
 
@@ -385,7 +477,6 @@ st.markdown("""
 """)
 
 
-
 deals = [
 
 
@@ -393,15 +484,10 @@ deals = [
 "name":"🎓 Student Deal (20% OFF)",
 "price":799,
 "items":[
-
 "🍔 Zinger Burger",
-
 "🍟 Fries",
-
 "🥤 Cold Drink"
-
 ]
-
 },
 
 
@@ -410,15 +496,10 @@ deals = [
 "name":"❤️ Couple Deal (25% OFF)",
 "price":1499,
 "items":[
-
 "🍔 2 Zinger Burger",
-
 "🍟 Large Fries",
-
 "🥤 2 Cold Drinks"
-
 ]
-
 },
 
 
@@ -427,17 +508,11 @@ deals = [
 "name":"👨‍👩‍👧 Family Deal (30% OFF)",
 "price":2499,
 "items":[
-
 "🍔 3 Burgers",
-
 "🍕 Medium Pizza",
-
 "🍟 Family Fries",
-
 "🥤 1.5L Drink"
-
 ]
-
 },
 
 
@@ -446,17 +521,11 @@ deals = [
 "name":"🌯 Roll Special Deal (25% OFF)",
 "price":1299,
 "items":[
-
-"🌯 GM Special Roll",
-
+"🌯 GM Food Special Roll",
 "🌯 Chicken Mayo Roll",
-
 "🍟 Fries",
-
 "🥤 Drink"
-
 ]
-
 },
 
 
@@ -465,15 +534,10 @@ deals = [
 "name":"🍕 Pizza Party Deal (30% OFF)",
 "price":2999,
 "items":[
-
 "🍕 Large Pizza",
-
 "🍟 Fries",
-
 "🥤 1.5L Drink"
-
 ]
-
 },
 
 
@@ -482,17 +546,11 @@ deals = [
 "name":"🔥 GM Mega Deal (35% OFF)",
 "price":3499,
 "items":[
-
 "🍔 2 Zinger Burger",
-
 "🌯 2 Special Rolls",
-
 "🍕 Medium Pizza",
-
 "🍟 Fries"
-
 ]
-
 }
 
 ]
@@ -522,9 +580,7 @@ for i,deal in enumerate(deals):
             )
 
 
-
             for item in deal["items"]:
-
 
                 st.write(
                     f"✅ {item}"
@@ -533,11 +589,8 @@ for i,deal in enumerate(deals):
 
 
             st.success(
-
                 f"💰 PKR {deal['price']}"
-
             )
-
 
 
             quantity = st.number_input(
@@ -555,7 +608,6 @@ for i,deal in enumerate(deals):
             )
 
 
-
             if st.button(
 
                 "🛒 Add Deal",
@@ -567,15 +619,15 @@ for i,deal in enumerate(deals):
 
                 st.session_state.cart.append(
 
-                    {
+                {
 
-                    "Item":deal["name"],
+                "Item":deal["name"],
 
-                    "Price":deal["price"],
+                "Price":deal["price"],
 
-                    "Quantity":quantity
+                "Quantity":quantity
 
-                    }
+                }
 
                 )
 
@@ -583,35 +635,36 @@ for i,deal in enumerate(deals):
                 st.success(
                     "Deal Added!"
                 )
-                # ----------------------------------
+
+
+
+
+# ----------------------------------
 # CHECKOUT
 # ----------------------------------
 
 st.divider()
 
 st.header(
-    "🧾 Checkout"
+"🧾 Checkout"
 )
 
 
 
-if len(st.session_state.cart) > 0:
+if len(st.session_state.cart)>0:
 
 
-    total = 0
+    total=0
 
 
     for item in st.session_state.cart:
 
-
-        total += item["Price"] * item["Quantity"]
+        total += item["Price"]*item["Quantity"]
 
 
 
     st.subheader(
-
         f"💰 Total Bill: PKR {total}"
-
     )
 
 
@@ -652,26 +705,16 @@ if len(st.session_state.cart) > 0:
 
 
 
-        elif city.lower() != "quetta":
+        elif city.lower()!="quetta":
 
 
             st.error(
-
-                "❌ Sorry! Delivery is only available in Quetta."
-
+                "❌ Delivery only available in Quetta."
             )
 
 
 
-        elif not (
-
-            phone.startswith("03")
-
-            and len(phone)==11
-
-            and phone.isdigit()
-
-        ):
+        elif not(phone.startswith("03") and len(phone)==11 and phone.isdigit()):
 
 
             st.error(
@@ -683,32 +726,74 @@ if len(st.session_state.cart) > 0:
         else:
 
 
-            order_id = "GM" + str(
+            order_id="GM"+str(random.randint(1000,9999))
 
-                random.randint(1000,9999)
 
+
+            items_text=""
+
+
+            for item in st.session_state.cart:
+
+
+                items_text += (
+
+                    item["Item"]
+
+                    +" x "
+
+                    +str(item["Quantity"])
+
+                    +", "
+
+                )
+
+
+
+            conn = sqlite3.connect(
+                "gm_orders.db"
             )
 
 
+            cursor = conn.cursor()
 
-            st.session_state.orders[order_id] = {
 
 
-                "Name": name,
+            cursor.execute("""
 
-                "Phone": phone,
+            INSERT INTO orders
 
-                "Address": address,
+            (order_id,name,phone,address,city,total,status,items)
 
-                "City": city,
+            VALUES (?,?,?,?,?,?,?,?)
 
-                "Total": total,
+            """,
 
-                "Status": "✅ Order Confirmed",
+            (
 
-                "Items": st.session_state.cart.copy()
+            order_id,
 
-            }
+            name,
+
+            phone,
+
+            address,
+
+            city,
+
+            total,
+
+            "✅ Order Confirmed",
+
+            items_text
+
+            ))
+
+
+
+            conn.commit()
+
+            conn.close()
 
 
 
@@ -720,6 +805,7 @@ if len(st.session_state.cart) > 0:
             st.info(
                 f"📦 Your Order ID: {order_id}"
             )
+
 
 
             st.write("""
@@ -738,59 +824,76 @@ if len(st.session_state.cart) > 0:
             st.session_state.cart=[]
 
 
-
 else:
-
 
     st.info(
         "🍔 Please add items first."
     )
-
-
-
-
-# ----------------------------------
+    # ----------------------------------
 # ORDER TRACKING
 # ----------------------------------
 
 st.divider()
 
 st.header(
-    "📦 Track Your Order"
+"📦 Track Your Order"
 )
 
 
 
 track_id = st.text_input(
-    "Enter Order ID"
+"Enter Order ID"
 )
 
 
 
 if st.button(
-    "🔍 Check Status"
+"🔍 Check Status"
 ):
 
 
-    if track_id in st.session_state.orders:
+    conn = sqlite3.connect(
+        "gm_orders.db"
+    )
+
+    cursor = conn.cursor()
 
 
-        order = st.session_state.orders[track_id]
+    result = cursor.execute(
+
+    "SELECT * FROM orders WHERE order_id=?",
+
+    (track_id,)
+
+    ).fetchone()
+
+
+    conn.close()
+
+
+
+    if result:
 
 
         st.success(
 
 f"""
 
-👤 Customer: {order['Name']}
+👤 Customer: {result[2]}
+
+🍔 Items:
+
+{result[8]}
 
 
-💰 Bill: PKR {order['Total']}
+💰 Bill:
+
+PKR {result[6]}
 
 
 📦 Status:
 
-{order['Status']}
+{result[7]}
 
 
 🚚 Thank You For Choosing GM FAST FOOD ❤️
@@ -802,10 +905,10 @@ f"""
 
     else:
 
-
         st.error(
             "❌ Order ID Not Found"
         )
+
 
 
 
@@ -816,22 +919,22 @@ f"""
 st.divider()
 
 st.header(
-    "👨‍💼 Admin Panel"
+"👨‍💼 Admin Panel"
 )
 
 
 
 password = st.text_input(
 
-    "Admin Password",
+"Admin Password",
 
-    type="password"
+type="password"
 
 )
 
 
 
-if password == "GM123":
+if password=="GM123":
 
 
     st.success(
@@ -839,21 +942,68 @@ if password == "GM123":
     )
 
 
+    conn = sqlite3.connect(
+        "gm_orders.db"
+    )
 
-    if len(st.session_state.orders)>0:
-
-
-        order_select = st.selectbox(
-
-            "Select Order",
-
-            list(st.session_state.orders.keys())
-
-        )
+    cursor = conn.cursor()
 
 
+    orders = cursor.execute(
+    "SELECT * FROM orders"
+    ).fetchall()
 
-        new_status = st.selectbox(
+
+    conn.close()
+
+
+
+    if orders:
+
+
+        for order in orders:
+
+
+            st.write("----------------")
+
+
+            st.write(
+
+f"""
+
+📦 Order ID: {order[1]}
+
+
+👤 Customer: {order[2]}
+
+
+📞 Phone: {order[3]}
+
+
+🏠 Address: {order[4]}
+
+
+🍔 Items:
+
+{order[8]}
+
+
+💰 Total:
+
+PKR {order[6]}
+
+
+📌 Status:
+
+{order[7]}
+
+"""
+
+            )
+
+
+
+            new_status = st.selectbox(
 
             "Change Status",
 
@@ -867,190 +1017,128 @@ if password == "GM123":
 
             "🎉 Delivered Successfully"
 
-            ]
+            ],
 
-        )
+            key=order[1]
 
-
-
-        if st.button(
-            "Update Status"
-        ):
-
-
-            st.session_state.orders[order_select]["Status"] = new_status
-
-
-            st.success(
-                "Status Updated!"
             )
 
 
-            st.rerun()
-            # ----------------------------------
+            if st.button(
+                "Update Status",
+                key="update"+order[1]
+            ):
+
+
+                conn=sqlite3.connect(
+                    "gm_orders.db"
+                )
+
+                cursor=conn.cursor()
+
+
+                cursor.execute(
+
+                "UPDATE orders SET status=? WHERE order_id=?",
+
+                (new_status,order[1])
+
+                )
+
+
+                conn.commit()
+
+                conn.close()
+
+
+                st.success(
+                    "Status Updated"
+                )
+
+
+                st.rerun()
+
+
+
+# ----------------------------------
 # RATING
 # ----------------------------------
 
 st.divider()
 
 st.header(
-    "⭐ Customer Rating"
+"⭐ Customer Rating"
 )
-
 
 
 rating = st.slider(
 
-    "Give Rating",
+"Give Rating",
 
-    1,
+1,
 
-    5,
+5,
 
-    5
+5
 
 )
 
 
-
 if st.button(
-    "⭐ Submit Rating"
+"⭐ Submit Rating"
 ):
 
-
     st.success(
-
-        f"Thank you for giving {rating} ⭐"
-
+    f"Thank you for giving {rating} ⭐"
     )
 
 
 
-
 # ----------------------------------
-# FEEDBACK / COMPLAINT
+# FEEDBACK
 # ----------------------------------
 
 st.divider()
 
-
 st.header(
-    "💬 Feedback & Complaint"
+"💬 Feedback & Complaint"
 )
-
 
 
 choice = st.selectbox(
 
-    "Select",
+"Select",
 
-    [
-
-    "⭐ Feedback",
-
-    "⚠️ Complaint",
-
-    "💡 Suggestion"
-
-    ]
+[
+"⭐ Feedback",
+"⚠️ Complaint",
+"💡 Suggestion"
+]
 
 )
 
 
-
 message = st.text_area(
-    "Your Message"
+"Your Message"
 )
 
 
 
 if st.button(
-    "📩 Submit"
+"📩 Submit"
 ):
-
 
     if message:
 
-
-        if choice=="⚠️ Complaint":
-
-
-            st.warning(
-
-                "Your complaint received. We will improve our service ❤️"
-
-            )
-
-
-        elif choice=="⭐ Feedback":
-
-
-            st.success(
-
-                "Thank you for your valuable feedback ❤️"
-
-            )
-
-
-        else:
-
-
-            st.info(
-
-                "Thank you for your suggestion 💡"
-
-            )
-
+        st.success(
+        "Thank you for your response ❤️"
+        )
 
     else:
 
-
         st.error(
-            "Please write message."
+        "Please write message"
         )
-
-
-
-
-# ----------------------------------
-# CONTACT INFORMATION
-# ----------------------------------
-
-st.divider()
-
-
-st.header(
-    "📞 Contact GM FAST FOOD"
-)
-
-
-
-st.write("""
-
-🍔 GM FAST FOOD
-
-
-📍 Delivery Area:
-
-Quetta Only
-
-
-📞 Call / WhatsApp:
-
-03368382248
-
-
-🚚 Fast Delivery
-
-💯 Quality Food
-
-
-⏰ Timing:
-
-12:00 PM - 12:00 AM
-
-""")
-
 
 
 
@@ -1065,12 +1153,9 @@ st.markdown("""
 
 # ❤️ Thank You For Visiting GM FAST FOOD
 
-
 🍔 Fresh Taste Everyday
 
-
 ⭐ Quality Food • Happy Customers
-
 
 🚚 Fast & Reliable Delivery
 
