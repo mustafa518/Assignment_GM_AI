@@ -303,74 +303,47 @@ for i,(pizza,price) in enumerate(pizza_menu.items()):
                     "Pizza Added!"
                 )
                 # ----------------------------------
-# CART SECTION
 # ----------------------------------
-
-st.sidebar.divider()
-
+# CART SECTION WITH REMOVE BUTTON
+# ----------------------------------
 
 with st.sidebar:
 
-
-    st.title(
-        "🛒 Your Cart"
-    )
+    st.title("🛒 Your Cart")
 
 
     if len(st.session_state.cart) == 0:
 
-
-        st.info(
-            "Cart is Empty"
-        )
+        st.info("Cart is Empty")
 
 
     else:
 
-
         total = 0
 
 
-        for index,item in enumerate(st.session_state.cart):
+        for index, item in enumerate(st.session_state.cart):
 
-
-            item_total = (
-
-                item["Price"]
-
-                *
-
-                item["Quantity"]
-
-            )
-
+            item_total = item["Price"] * item["Quantity"]
 
             total += item_total
 
 
-
             st.write(
-
                 f"""
-{item['Item']}
+🍔 {item['Item']}
 
 Quantity: {item['Quantity']}
 
 Price: PKR {item_total}
-
 """
-
             )
 
 
             if st.button(
-
-                "🗑 Remove",
-
+                "🗑 Remove Item",
                 key=f"remove_{index}"
-
             ):
-
 
                 st.session_state.cart.pop(index)
 
@@ -381,24 +354,18 @@ Price: PKR {item_total}
         st.divider()
 
 
-
         st.subheader(
-
             f"💰 Total: PKR {total}"
-
         )
 
 
-
         if st.button(
-            "Clear Cart"
+            "🗑 Clear Cart"
         ):
-
 
             st.session_state.cart = []
 
             st.rerun()
-
 
 
 
