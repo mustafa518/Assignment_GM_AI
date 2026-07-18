@@ -57,8 +57,8 @@ deals = [
         "items": [
             "🍔 Zinger Burger",
             "🍟 French Fries",
-            "🥤 Regular Cold Drink",
-            "🏷️ Discount 20% OFF"
+            "🥤 Cold Drink",
+            "🏷️ 20% OFF"
         ]
     },
 
@@ -68,34 +68,34 @@ deals = [
         "price": 1499,
         "items": [
             "🧀 2 Cheese Burgers",
-            "🍟 Large French Fries",
+            "🍟 Large Fries",
             "🥤 2 Cold Drinks",
-            "🏷️ Discount 25% OFF"
+            "🏷️ 25% OFF"
         ]
     },
 
 
     {
-        "name": "👨‍👩‍👧 Family Feast Deal (30% OFF)",
+        "name": "👨‍👩‍👧 Family Deal (30% OFF)",
         "price": 2499,
         "items": [
             "🍔 3 Zinger Burgers",
             "🍟 Large Fries",
             "🍕 Medium Pizza",
-            "🥤 1.5L Cold Drink",
-            "🏷️ Discount 30% OFF"
+            "🥤 1.5L Drink",
+            "🏷️ 30% OFF"
         ]
     },
 
 
     {
-        "name": "🌯 Shawarma Lovers Deal (15% OFF)",
+        "name": "🌯 Shawarma Deal (15% OFF)",
         "price": 999,
         "items": [
-            "🌯 2 Chicken Shawarma",
-            "🍟 French Fries",
+            "🌯 2 Shawarma",
+            "🍟 Fries",
             "🥤 Cold Drink",
-            "🏷️ Discount 15% OFF"
+            "🏷️ 15% OFF"
         ]
     },
 
@@ -107,8 +107,8 @@ deals = [
             "🍔 2 Zinger Burgers",
             "🧀 2 Cheese Burgers",
             "🍟 Family Fries",
-            "🥤 1.5L Cold Drink",
-            "🏷️ Discount 35% OFF"
+            "🥤 1.5L Drink",
+            "🏷️ 35% OFF"
         ]
     }
 
@@ -117,11 +117,10 @@ deals = [
 
 
 # ----------------------------------
-# SIDEBAR CART
+# SIDEBAR
 # ----------------------------------
 
 with st.sidebar:
-
 
     st.image(
         "owner.png",
@@ -148,8 +147,7 @@ with st.sidebar:
 
     else:
 
-
-        total = sum(
+        cart_total = sum(
             item["Price"]
             for item in st.session_state.cart
         )
@@ -166,11 +164,13 @@ with st.sidebar:
 
 
         st.subheader(
-            f"💰 Total: PKR {total}"
+            f"💰 Total: PKR {cart_total}"
         )
 
 
-        if st.button("🗑 Clear Cart"):
+        if st.button(
+            "🗑 Clear Cart"
+        ):
 
             st.session_state.cart = []
 
@@ -224,7 +224,7 @@ st.info(
 
 
 # ----------------------------------
-# MENU SECTION
+# MENU
 # ----------------------------------
 
 st.header(
@@ -233,7 +233,6 @@ st.header(
 
 
 cols = st.columns(2)
-
 
 
 for i,item in enumerate(menu):
@@ -260,14 +259,11 @@ for i,item in enumerate(menu):
                 key=f"menu_{i}"
             ):
 
-
                 st.session_state.cart.append(
-
                     {
                         "Item": item["Item"],
                         "Price": item["Price"]
                     }
-
                 )
 
 
@@ -280,11 +276,12 @@ for i,item in enumerate(menu):
 
 st.divider()
 
+
 st.markdown("""
 
-# 🔥 GM FAST FOOD DISCOUNT OFFERS 🔥
+# 🔥 GM FAST FOOD SPECIAL DEALS 🔥
 
-### 🎁 Amazing Deals Up To 35% OFF ❤️
+### 🎁 Save More With Our Discount Offers ❤️
 
 """)
 
@@ -294,9 +291,12 @@ deal_cols = st.columns(3)
 
 for i, deal in enumerate(deals):
 
+
     with deal_cols[i % 3]:
 
+
         with st.container(border=True):
+
 
             st.subheader(
                 deal["name"]
@@ -316,7 +316,7 @@ for i, deal in enumerate(deals):
 
 
             st.success(
-                f"🔥 Offer Price: PKR {deal['price']}"
+                f"💰 Price: PKR {deal['price']}"
             )
 
 
@@ -325,43 +325,53 @@ for i, deal in enumerate(deals):
                 key=f"deal_{i}"
             ):
 
+
                 st.session_state.cart.append(
+
                     {
                         "Item": deal["name"],
                         "Price": deal["price"]
                     }
+
                 )
 
 
                 st.success(
-                    "🎉 Deal Added!"
+                    "🎉 Deal Added Successfully!"
                 )
 
 
 
 # ----------------------------------
-# CHECKOUT
+# CHECKOUT SECTION
 # ----------------------------------
 
 st.divider()
+
 
 st.header(
     "🧾 Checkout"
 )
 
 
+
 if len(st.session_state.cart) > 0:
 
 
     total = sum(
+
         item["Price"]
+
         for item in st.session_state.cart
+
     )
 
 
     delivery_charges = 100
 
+
     final_total = total + delivery_charges
+
 
 
     st.write(
@@ -377,6 +387,7 @@ if len(st.session_state.cart) > 0:
     st.subheader(
         f"💰 Total Bill: PKR {final_total}"
     )
+
 
 
     name = st.text_input(
@@ -400,22 +411,29 @@ if len(st.session_state.cart) > 0:
     ):
 
 
+
         if not name or not address or not phone:
+
 
             st.error(
                 "⚠️ Please fill all details."
             )
 
 
+
         elif not (
+
             phone.startswith("03")
-            and len(phone)==11
+            and len(phone) == 11
             and phone.isdigit()
+
         ):
 
+
             st.error(
-                "❌ Wrong Phone Number"
+                "❌ Enter correct phone number"
             )
+
 
 
         else:
@@ -428,10 +446,15 @@ if len(st.session_state.cart) > 0:
 
             st.session_state.orders[order_id] = {
 
+
                 "Name": name,
+
                 "Phone": phone,
+
                 "Address": address,
+
                 "Total": final_total,
+
                 "Status": "✅ Order Confirmed"
 
             }
@@ -439,31 +462,47 @@ if len(st.session_state.cart) > 0:
 
 
             st.success(
-                "🎉 Order Placed Successfully!"
+                "🎉 Your Order Has Been Placed Successfully!"
             )
 
 
             st.info(
-                f"📦 Your Order ID: {order_id}"
+                f"📦 Your Order ID is: {order_id}"
             )
 
 
-            st.balloons()
+            st.markdown(f"""
+
+### ❤️ Thank You {name}
+
+Your order has been received successfully.
+
+🍔 We are preparing your fresh food.
+
+🚚 Delivery Time: 20-30 Minutes
+
+
+**GM FAST FOOD Team**
+
+""")
 
 
             st.session_state.cart = []
 
 
+
 else:
 
+
     st.info(
-        "🍔 Add items to place your order."
+        "🍔 Please add food items or deals to your cart."
     )
     # ----------------------------------
-# ORDER TRACKING
+# CUSTOMER ORDER TRACKING
 # ----------------------------------
 
 st.divider()
+
 
 st.header(
     "📦 Track Your Order"
@@ -471,12 +510,13 @@ st.header(
 
 
 search_id = st.text_input(
-    "Enter Order ID"
+    "Enter Your Order ID"
 )
 
 
+
 if st.button(
-    "🔍 Check Status"
+    "🔍 Check Order Status"
 ):
 
 
@@ -489,19 +529,27 @@ if st.button(
         st.success(
             f"""
 
+✅ Order Found
+
+
 👤 Customer: {order['Name']}
 
-💰 Total: PKR {order['Total']}
+💰 Total Bill: PKR {order['Total']}
+
 
 📦 Current Status:
 
 {order['Status']}
+
+
+🚚 Thank you for choosing GM FAST FOOD ❤️
 
 """
         )
 
 
     else:
+
 
         st.error(
             "❌ Order ID Not Found"
@@ -515,55 +563,94 @@ if st.button(
 
 st.divider()
 
+
 st.header(
     "👨‍💼 Admin Panel"
 )
 
 
-password = st.text_input(
-    "Admin Password",
+admin_password = st.text_input(
+    "Enter Admin Password",
     type="password"
 )
 
 
 
-if password == "GM123":
+if admin_password == "GM123":
+
+
+    st.success(
+        "Admin Login Successful ✅"
+    )
+
 
 
     if len(st.session_state.orders) > 0:
 
 
+
         selected_order = st.selectbox(
+
             "Select Order",
+
             list(st.session_state.orders.keys())
+
         )
 
 
-        status = st.selectbox(
-            "Update Status",
+
+        new_status = st.selectbox(
+
+            "Change Order Status",
+
             [
+
                 "✅ Order Confirmed",
+
                 "👨‍🍳 Preparing Food",
+
                 "🚚 Out For Delivery",
+
                 "🎉 Delivered Successfully"
+
             ]
+
         )
 
 
 
-       if st.button(
-    "Update Status"
-):
+        if st.button(
+            "🔄 Update Status"
+        ):
 
-    st.session_state.orders[selected_order]["Status"] = status
 
-    st.success(
-        "Status Updated Successfully!"
-    )
 
-    st.rerun()
+            st.session_state.orders[selected_order]["Status"] = new_status
+
+
+
+            st.success(
+                "Order Status Updated Successfully!"
+            )
+
+
+            # refresh page so customer tracking updates
+
+            st.rerun()
+
+
+
+    else:
+
+
+        st.info(
+            "No Orders Available"
+        )
+
+
 
 else:
+
 
     st.info(
         "Admin Access Only"
@@ -574,25 +661,28 @@ else:
 
 st.divider()
 
+
 st.header(
     "⭐ Rate Your Experience"
 )
 
 
 rating = st.slider(
-    "Give Rating",
+    "Select Rating",
     1,
     5,
     5
 )
 
 
+
 if st.button(
-    "Submit Rating"
+    "⭐ Submit Rating"
 ):
 
+
     st.success(
-        f"Thank you for giving {rating} ⭐"
+        f"Thank you for giving {rating} ⭐ rating!"
     )
 
 
@@ -603,39 +693,72 @@ if st.button(
 
 st.divider()
 
+
 st.header(
     "💬 Feedback & Complaint"
 )
 
 
 feedback_type = st.selectbox(
-    "Select",
+
+    "Select Type",
+
     [
+
         "⭐ Feedback",
+
         "⚠️ Complaint",
+
         "💡 Suggestion"
+
     ]
+
 )
 
 
-message = st.text_area(
-    "Your Message"
+
+customer_message = st.text_area(
+    "Write Your Message"
 )
+
 
 
 if st.button(
     "📩 Submit"
 ):
 
-    if message:
 
-        st.success(
-            "Thank you! Your response has been received ❤️"
-        )
+    if customer_message:
+
+
+        if feedback_type == "⚠️ Complaint":
+
+
+            st.warning(
+                "Thank you. Your complaint has been received. We will improve our service ❤️"
+            )
+
+
+        elif feedback_type == "⭐ Feedback":
+
+
+            st.success(
+                "Thank you for your valuable feedback ❤️"
+            )
+
+
+        else:
+
+
+            st.info(
+                "Thank you for your suggestion 💡"
+            )
+
 
     else:
 
-        st.warning(
+
+        st.error(
             "Please write your message."
         )
 
@@ -647,6 +770,7 @@ if st.button(
 
 st.divider()
 
+
 st.header(
     "🕒 Shop Timing"
 )
@@ -654,9 +778,13 @@ st.header(
 
 st.write("""
 
-⏰ 12:00 PM - 12:00 AM
+⏰ Opening Hours:
+
+12:00 PM - 12:00 AM
+
 
 📅 Open Everyday
+
 
 🚚 Online Delivery Available
 
@@ -670,6 +798,7 @@ st.write("""
 
 st.divider()
 
+
 st.header(
     "📞 Contact Us"
 )
@@ -679,11 +808,16 @@ st.write("""
 
 🍔 GM FAST FOOD
 
-📱 Call / WhatsApp: 03368382248
+
+📱 Call / WhatsApp:
+
+03368382248
+
 
 🚚 Fast & Reliable Delivery
 
-💯 Quality Food & Best Service
+
+💯 Quality Food & Customer Satisfaction
 
 """)
 
@@ -700,11 +834,17 @@ st.markdown("""
 
 ## ❤️ Thank You For Visiting GM FAST FOOD
 
+
 🍔 Fresh Taste Everyday
 
-⭐ Quality Food • Happy Customers
+
+⭐ Quality Food • Best Service
+
 
 🚚 Fast Delivery
+
+
+📞 Customer Support: 03368382248
 
 
 **GM FAST FOOD Team**
