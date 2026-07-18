@@ -182,8 +182,7 @@ with col2:
 st.markdown("""
 
 ## 😋 WELCOME TO GM FAST FOOD
-          ( The Name Of Real Taste )
-
+          ( THE NAME OF REAL TASTE )
 
 🍔 Burgers
 
