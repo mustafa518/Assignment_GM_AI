@@ -3,6 +3,7 @@ import streamlit as st
 # ----------------------------------
 # PAGE CONFIG
 # ----------------------------------
+
 st.set_page_config(
     page_title="GM Fast Food",
     page_icon="🍔",
@@ -12,12 +13,15 @@ st.set_page_config(
 # ----------------------------------
 # SESSION STATE
 # ----------------------------------
+
 if "cart" not in st.session_state:
     st.session_state.cart = []
+
 
 # ----------------------------------
 # MENU ITEMS
 # ----------------------------------
+
 menu = [
     {"Item": "🍔 Zinger Burger", "Price": 650},
     {"Item": "🧀🍔 Cheese Burger", "Price": 750},
@@ -29,9 +33,11 @@ menu = [
     {"Item": "🍕 Pizza", "Price": 1200}
 ]
 
+
 # ----------------------------------
 # DEALS
 # ----------------------------------
+
 deals = [
     {
         "name": "🌯🍟🥤 Shawarma Starter Deal",
@@ -42,6 +48,7 @@ deals = [
             "1.5L Cold Drink 🥤"
         ]
     },
+
     {
         "name": "🍔🌯🥤 Burger Shawarma Deal",
         "price": 1299,
@@ -51,6 +58,7 @@ deals = [
             "1.5L Cold Drink 🥤"
         ]
     },
+
     {
         "name": "🧀🍔🍟🥤 Burger Fries Deal",
         "price": 1099,
@@ -62,88 +70,146 @@ deals = [
     }
 ]
 
+
 # ----------------------------------
-# SIDEBAR CART
+# SIDEBAR
 # ----------------------------------
+
 with st.sidebar:
+
+    st.image("owner.png", width=150)
 
     st.write("👨‍💼 Owner: Ghulam Mustafa")
 
     st.title("🛒 Your Cart")
 
+
     if len(st.session_state.cart) == 0:
+
         st.info("Cart is Empty")
+
 
     else:
 
         total = sum(item["Price"] for item in st.session_state.cart)
 
+
         for item in st.session_state.cart:
-            st.write(f"✅ {item['Item']} - PKR {item['Price']}")
+            st.write(
+                f"✅ {item['Item']} - PKR {item['Price']}"
+            )
+
 
         st.divider()
 
         st.subheader(f"💰 Total: PKR {total}")
 
+
         if st.button("🗑 Clear Cart"):
+
             st.session_state.cart = []
             st.rerun()
+
+
 
 # ----------------------------------
 # HEADER
 # ----------------------------------
-st.title("🍔 GM FAST FOOD")
 
-st.write("👨‍💼 Owner: Ghulam Mustafa")
+col1, col2 = st.columns([1,4])
+
+
+with col1:
+
+    st.image(
+        "owner.png",
+        width=160
+    )
+
+
+with col2:
+
+    st.title("🍔 GM FAST FOOD")
+
+    st.write("👨‍💼 Owner: Ghulam Mustafa")
+
+
 
 st.markdown("""
+
 ### 😋 Welcome to GM Fast Food
 
 Fresh Burgers • Crispy Fries • Delicious Shawarma • Hot Pizza
 
 🚚 Fast Delivery | 💯 Quality Food | 💵 Cash On Delivery
+
 """)
 
-st.info("🔥 Today's Special: Buy Any Burger & Get 20% OFF on French Fries!")
+
+st.info(
+    "🔥 Today's Special: Buy Any Burger & Get 20% OFF on French Fries!"
+)
+
+
 
 # ----------------------------------
 # MENU
 # ----------------------------------
+
 st.header("📋 Our Special Menu")
+
 
 cols = st.columns(2)
 
-for i, item in enumerate(menu):
+
+for i,item in enumerate(menu):
 
     with cols[i % 2]:
 
         with st.container(border=True):
 
             st.subheader(item["Item"])
-            st.write(f"💰 Price: PKR {item['Price']}")
 
-            if st.button("➕ Add to Cart", key=f"menu_{i}"):
+            st.write(
+                f"💰 Price: PKR {item['Price']}"
+            )
 
-                st.session_state.cart.append({
-                    "Item": item["Item"],
-                    "Price": item["Price"]
-                })
+
+            if st.button(
+                "➕ Add to Cart",
+                key=f"menu_{i}"
+            ):
+
+                st.session_state.cart.append(
+                    {
+                        "Item": item["Item"],
+                        "Price": item["Price"]
+                    }
+                )
 
                 st.success("Added Successfully!")
+
+
 
 # ----------------------------------
 # DEALS
 # ----------------------------------
+
 st.divider()
 
 st.markdown("""
+
 # 🎉 MEGA SAVING DEALS 🎉
+
 ### Save More • Eat More • Enjoy More ❤️
+
 """)
+
 
 deal_cols = st.columns(3)
 
-for i, deal in enumerate(deals):
+
+for i,deal in enumerate(deals):
 
     with deal_cols[i]:
 
@@ -153,102 +219,153 @@ for i, deal in enumerate(deals):
 
             st.write("📦 Includes:")
 
+
             for item in deal["items"]:
+
                 st.write(f"✅ {item}")
 
-            st.success(f"💰 PKR {deal['price']}")
 
-            if st.button("Add Deal", key=f"deal_{i}"):
+            st.success(
+                f"💰 PKR {deal['price']}"
+            )
 
-                st.session_state.cart.append({
-                    "Item": deal["name"],
-                    "Price": deal["price"]
-                })
+
+            if st.button(
+                "Add Deal",
+                key=f"deal_{i}"
+            ):
+
+                st.session_state.cart.append(
+                    {
+                        "Item": deal["name"],
+                        "Price": deal["price"]
+                    }
+                )
 
                 st.success("Deal Added!")
+
+
 
 # ----------------------------------
 # CHECKOUT
 # ----------------------------------
+
 st.divider()
 
 st.header("🧾 Checkout")
 
+
 if len(st.session_state.cart) > 0:
 
-    total = sum(item["Price"] for item in st.session_state.cart)
 
-    st.subheader(f"💰 Total Bill: PKR {total}")
+    total = sum(
+        item["Price"]
+        for item in st.session_state.cart
+    )
+
+
+    st.subheader(
+        f"💰 Total Bill: PKR {total}"
+    )
+
 
     name = st.text_input("👤 Customer Name")
-    address = st.text_area("🏠 Delivery Address")
-    phone = st.text_input("📞 Contact Number")
+
+    address = st.text_area(
+        "🏠 Delivery Address"
+    )
+
+    phone = st.text_input(
+        "📞 Contact Number"
+    )
+
 
     if st.button("✅ Place Order"):
 
+
         if not name or not address or not phone:
 
-            st.error("⚠️ Please fill all fields.")
+            st.error(
+                "⚠️ Please fill all fields."
+            )
+
 
         elif not (
             phone.startswith("03")
-            and len(phone) == 11
+            and len(phone)==11
             and phone.isdigit()
         ):
 
             st.error(
-                "❌ Wrong Credentials! Phone number must start with 03 and contain 11 digits."
+                "❌ Wrong Phone Number"
             )
+
 
         else:
 
-            st.success("🎉 Order Placed Successfully!")
+            st.success(
+                "🎉 Order Placed Successfully!"
+            )
+
             st.balloons()
 
-            st.markdown(f"""
-### 🍔 Thank You For Choosing GM Fast Food!
 
-Dear **{name}**,
+            st.write(
+                f"""
+                ### 🍔 Thank You {name}
 
-✅ Your order has been successfully confirmed.
+                📞 Contact: {phone}
 
-📞 Contact Number: **{phone}**
+                🏠 Address: {address}
 
-🏠 Delivery Address: **{address}**
+                💰 Bill: PKR {total}
 
-💰 Total Bill: **PKR {total}**
+                🚚 Delivery Time: 20-30 Minutes
+                """
+            )
 
-🚚 Estimated Delivery Time: **20-30 Minutes**
 
-👨‍🍳 Our team has started preparing your order.
+            st.write(
+                "### 🛍️ Order Summary"
+            )
 
-❤️ Thank you for choosing GM Fast Food.
-
-We hope you enjoy your meal and look forward to serving you again.
-""")
-
-            st.write("### 🛍️ Order Summary")
 
             for item in st.session_state.cart:
-                st.write(f"✅ {item['Item']} - PKR {item['Price']}")
 
-            st.session_state.cart = []
+                st.write(
+                    f"✅ {item['Item']} - PKR {item['Price']}"
+                )
+
+
+            st.session_state.cart=[]
+
 
 else:
 
-    st.info("🍔 Please add food items or deals to your cart.")
+    st.info(
+        "🍔 Please add food items or deals to your cart."
+    )
+
+
 
 # ----------------------------------
 # FOOTER
 # ----------------------------------
+
 st.divider()
 
+
 st.markdown("""
+
 ### ❤️ Thank You For Visiting GM Fast Food
 
-📍 Fresh Food Everyday  
-📞 Customer Support Available  
+📍 Fresh Food Everyday
+
+📞 Customer Support Available
+
 🚚 Fast & Reliable Delivery
 
+
 **GM Fast Food Team**
+
 """)
