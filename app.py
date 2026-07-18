@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 # ----------------------------------
 # PAGE CONFIG
@@ -26,7 +27,7 @@ menu = [
     {"Item": "🥪🧀 Grilled Cheese Sandwich", "Price": 550},
     {"Item": "🍢 Reshmi Kabab", "Price": 700},
     {"Item": "🍗 Chicken Nuggets", "Price": 500},
-    {"Item": "🍕 Pizza", "Price": 1200}
+    {"Item": "🍕 Pizza", "Price": 1200},
 ]
 
 # ----------------------------------
@@ -73,14 +74,12 @@ with st.sidebar:
         st.info("Cart is Empty")
 
     else:
-
         total = sum(item["Price"] for item in st.session_state.cart)
 
         for item in st.session_state.cart:
             st.write(f"✅ {item['Item']} - PKR {item['Price']}")
 
         st.divider()
-
         st.subheader(f"💰 Total: PKR {total}")
 
         if st.button("🗑 Clear Cart"):
@@ -147,6 +146,7 @@ st.divider()
 
 st.markdown("""
 # 🎉 MEGA SAVING DEALS 🎉
+
 ### Save More • Eat More • Enjoy More ❤️
 """)
 
@@ -214,44 +214,26 @@ if len(st.session_state.cart) > 0:
             st.success("🎉 Order Placed Successfully!")
             st.balloons()
 
-            st.success(
-                f"📲 Dear {name}, your order has been confirmed successfully."
-            )
-
-            st.info(
-                f"📩 Confirmation message has been sent to {phone}."
-            )
-
             st.markdown(f"""
 ### 🍔 Thank You For Choosing GM Fast Food!
 
 Dear **{name}**,
 
-✅ Your order has been successfully confirmed.
-
-📞 Contact Number: **{phone}**
-
-🏠 Delivery Address: **{address}**
-
-💰 Total Bill: **PKR {total}**
+✅ Your order has been confirmed.
 
 🚚 Estimated Delivery Time: **20-30 Minutes**
 
-👨‍🍳 Our team has started preparing your order.
+💰 Total Bill: **PKR {total}**
 
 ❤️ Thank you for choosing GM Fast Food.
 
-We hope you enjoy your meal and look forward to serving you again.
+We look forward to serving you again!
 """)
 
-            st.write("### 🛍️ Order Summary")
+            st.write("### 🛍️ Ordered Items")
 
             for item in st.session_state.cart:
                 st.write(f"✅ {item['Item']} - PKR {item['Price']}")
-
-            st.info(
-                "🍟 Tip: Add French Fries and a Cold Drink next time for a complete meal!"
-            )
 
             st.session_state.cart = []
 
