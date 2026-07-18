@@ -551,17 +551,17 @@ if password == "GM123":
 
 
 
-        if st.button(
-            "Update Status"
-        ):
+       if st.button(
+    "Update Status"
+):
 
+    st.session_state.orders[selected_order]["Status"] = status
 
-            st.session_state.orders[selected_order]["Status"] = status
+    st.success(
+        "Status Updated Successfully!"
+    )
 
-
-            st.success(
-                "Status Updated Successfully!"
-            )
+    st.rerun()
 
 else:
 
