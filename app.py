@@ -67,7 +67,7 @@ deals = [
 # ----------------------------------
 with st.sidebar:
 
-    st.image("owner.png", width=180)
+    st.write("👨‍💼 Owner: Ghulam Mustafa")
 
     st.title("🛒 Your Cart")
 
@@ -92,16 +92,11 @@ with st.sidebar:
 # ----------------------------------
 # HEADER
 # ----------------------------------
-col1, col2 = st.columns([1, 2])
+st.title("🍔 GM FAST FOOD")
 
-with col1:
-    st.image("owner.png", width=320)
+st.write("👨‍💼 Owner: Ghulam Mustafa")
 
-with col2:
-
-    st.title("🍔 GM FAST FOOD")
-
-    st.markdown("""
+st.markdown("""
 ### 😋 Welcome to GM Fast Food
 
 Fresh Burgers • Crispy Fries • Delicious Shawarma • Hot Pizza
@@ -109,20 +104,7 @@ Fresh Burgers • Crispy Fries • Delicious Shawarma • Hot Pizza
 🚚 Fast Delivery | 💯 Quality Food | 💵 Cash On Delivery
 """)
 
-    st.success("🔥 Today's Special: Buy Any Burger & Get 20% OFF on French Fries!")
-
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.metric("🍔 Menu Items", "8")
-
-with col2:
-    st.metric("🎉 Deals", "3")
-
-with col3:
-    st.metric("🚚 Delivery", "20-30 Min")
-
-st.divider()
+st.info("🔥 Today's Special: Buy Any Burger & Get 20% OFF on French Fries!")
 
 # ----------------------------------
 # MENU
