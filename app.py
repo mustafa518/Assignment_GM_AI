@@ -210,7 +210,7 @@ with col2:
 
 st.markdown("""
 
-## 😋 Welcome to GM Fast Food
+## 😋 WELCOME TO GM FAST FOOD
 
 Fresh Burgers • Crispy Fries • Delicious Shawarma • Hot Pizza
 
