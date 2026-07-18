@@ -181,20 +181,16 @@ with col2:
 
 st.markdown("""
 
-## 😋 WELCOME TO GM FAST FOOD
-          ( THE NAME OF REAL TASTE )
+## 😋 Welcome to GM FAST FOOD
 
-🍔 Burgers
+### 🔥 Experience The Real Taste 🔥
 
-🌯 Special Rolls
-
-🍕 Pizza
-
-🍟 Fries
-
+🍔 Burgers  
+🌯 Special Rolls  
+🍕 Pizza  
+🍟 Fries  
 
 🚚 Fast Delivery | 💯 Quality Food
-
 
 """)
 
