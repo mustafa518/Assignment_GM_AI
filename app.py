@@ -1020,40 +1020,40 @@ PKR {order[6]}
             )
 
 
-            if st.button(
-    "Update Status",
-    key="update"+order[1]
-):
+                        if st.button(
+                "Update Status",
+                key="update"+order[1]
+            ):
 
-    conn = sqlite3.connect("gm_orders.db")
-    cursor = conn.cursor()
+                conn = sqlite3.connect("gm_orders.db")
+                cursor = conn.cursor()
 
-    if new_status == "🎉 Delivered Successfully":
+                if new_status == "🎉 Delivered Successfully":
 
-        cursor.execute(
-            "DELETE FROM orders WHERE order_id=?",
-            (order[1],)
-        )
+                    cursor.execute(
+                        "DELETE FROM orders WHERE order_id=?",
+                        (order[1],)
+                    )
 
-        st.success(
-            "Order Delivered & Removed Successfully ✅"
-        )
+                    st.success(
+                        "Order Delivered & Removed Successfully ✅"
+                    )
 
-    else:
+                else:
 
-        cursor.execute(
-            "UPDATE orders SET status=? WHERE order_id=?",
-            (new_status, order[1])
-        )
+                    cursor.execute(
+                        "UPDATE orders SET status=? WHERE order_id=?",
+                        (new_status, order[1])
+                    )
 
-        st.success(
-            "Status Updated ✅"
-        )
+                    st.success(
+                        "Status Updated ✅"
+                    )
 
-    conn.commit()
-    conn.close()
+                conn.commit()
+                conn.close()
 
-    st.rerun()
+                st.rerun()
 
 
 # ----------------------------------
