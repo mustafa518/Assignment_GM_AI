@@ -918,25 +918,16 @@ st.header(
 "👨💼 Admin Panel"
 )
 
-
-
 password = st.text_input(
-
 "Admin Password",
-
 type="password"
-
 )
 
-
-
 if password=="GM123":
-
 
     st.success(
         "Admin Login Successful"
     )
-
 
     conn = sqlite3.connect(
         "gm_orders.db"
@@ -944,24 +935,17 @@ if password=="GM123":
 
     cursor = conn.cursor()
 
-
     orders = cursor.execute(
     "SELECT * FROM orders"
     ).fetchall()
 
-
     conn.close()
-
-
 
     if orders:
 
-
         for order in orders:
 
-
             st.write("----------------")
-
 
             st.write(
 
@@ -969,25 +953,19 @@ f"""
 
 📦 Order ID: {order[1]}
 
-
 👤 Customer: {order[2]}
-
 
 📞 Phone: {order[3]}
 
-
 🏠 Address: {order[4]}
-
 
 🍔 Items:
 
 {order[8]}
 
-
 💰 Total:
 
 PKR {order[6]}
-
 
 📌 Status:
 
@@ -996,8 +974,6 @@ PKR {order[6]}
 """
 
             )
-
-
 
             new_status = st.selectbox(
 
@@ -1019,41 +995,43 @@ PKR {order[6]}
 
             )
 
-
             if st.button(
                 "Update Status",
                 key="update"+order[1]
             ):
 
-
-                conn=sqlite3.connect(
+                conn = sqlite3.connect(
                     "gm_orders.db"
                 )
 
-                cursor=conn.cursor()
+                cursor = conn.cursor()
 
+                if new_status == "🎉 Delivered Successfully":
 
-                cursor.execute(
+                    cursor.execute(
+                        "DELETE FROM orders WHERE order_id=?",
+                        (order[1],)
+                    )
 
-                "UPDATE orders SET status=? WHERE order_id=?",
+                    st.success(
+                        "Order Delivered Successfully & Removed ✅"
+                    )
 
-                (new_status,order[1])
+                else:
 
-                )
+                    cursor.execute(
+                        "UPDATE orders SET status=? WHERE order_id=?",
+                        (new_status, order[1])
+                    )
 
+                    st.success(
+                        "Status Updated ✅"
+                    )
 
                 conn.commit()
-
                 conn.close()
 
-
-                st.success(
-                    "Status Updated"
-                )
-
-
                 st.rerun()
-
 
 
 # ----------------------------------
