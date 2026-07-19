@@ -1036,7 +1036,7 @@ PKR {order[6]}
         )
 
         st.success(
-            "Order Delivered & Removed From History ✅"
+            "Order Delivered & Removed Successfully ✅"
         )
 
     else:
@@ -1054,7 +1054,6 @@ PKR {order[6]}
     conn.close()
 
     st.rerun()
-
 
 
 # ----------------------------------
