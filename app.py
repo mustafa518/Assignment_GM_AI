@@ -1020,40 +1020,40 @@ PKR {order[6]}
             )
 
 
-                                    if st.button(
+            if st.button(
                 "Update Status",
                 key="update"+order[1]
             ):
 
-                conn = sqlite3.connect("gm_orders.db")
-                cursor = conn.cursor()
 
-                if new_status == "🎉 Delivered Successfully":
+                conn=sqlite3.connect(
+                    "gm_orders.db"
+                )
 
-                    cursor.execute(
-                        "DELETE FROM orders WHERE order_id=?",
-                        (order[1],)
-                    )
+                cursor=conn.cursor()
 
-                    st.success(
-                        "Order Delivered & Removed Successfully ✅"
-                    )
 
-                else:
+                cursor.execute(
 
-                    cursor.execute(
-                        "UPDATE orders SET status=? WHERE order_id=?",
-                        (new_status, order[1])
-                    )
+                "UPDATE orders SET status=? WHERE order_id=?",
 
-                    st.success(
-                        "Status Updated ✅"
-                    )
+                (new_status,order[1])
+
+                )
+
 
                 conn.commit()
+
                 conn.close()
 
+
+                st.success(
+                    "Status Updated"
+                )
+
+
                 st.rerun()
+
 
 
 # ----------------------------------
@@ -1151,7 +1151,7 @@ st.markdown("""
 
 🍔 Fresh Taste Everyday
 
-⭐ Quality Food • Happy Customers
+⭐ Quality Food • Happy Customers	
 
 🚚 Fast & Reliable Delivery
 
