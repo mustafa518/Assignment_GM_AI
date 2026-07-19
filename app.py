@@ -174,7 +174,7 @@ with col2:
 
 
     st.write(
-        "👨‍💼 Owner: Ghulam Mustafa"
+        "👨💼 Owner: Ghulam Mustafa"
     )
 
 
@@ -501,7 +501,7 @@ deals = [
 
 
 {
-"name":"👨‍👩‍👧 Family Deal (30% OFF)",
+"name":"👨👩👧 Family Deal (30% OFF)",
 "price":2499,
 "items":[
 "🍔 3 Burgers",
@@ -808,7 +808,7 @@ if len(st.session_state.cart)>0:
 
 ❤️ Thank you for ordering from GM FAST FOOD.
 
-👨‍🍳 Your food preparation has started.
+👨🍳 Your food preparation has started.
 
 🚚 Delivery Time: 20-30 Minutes
 
@@ -915,7 +915,7 @@ PKR {result[6]}
 st.divider()
 
 st.header(
-"👨‍💼 Admin Panel"
+"👨💼 Admin Panel"
 )
 
 
@@ -1007,7 +1007,7 @@ PKR {order[6]}
 
             "✅ Order Confirmed",
 
-            "👨‍🍳 Preparing Food",
+            "👨🍳 Preparing Food",
 
             "🚚 Out For Delivery",
 
@@ -1020,7 +1020,7 @@ PKR {order[6]}
             )
 
 
-       if st.button(
+            if st.button(
     "Update Status",
     key="update"+order[1]
 ):
